@@ -1,0 +1,40 @@
+ #include <stdio.h>
+
+int main() {
+    int frames = 3, pages[] = {1,2,3,4,1,2,5,1,2,3,4,5};
+    int n = 12, i, j, k, fault = 0;
+    int f[3];
+
+    for(i = 0; i < frames; i++) f[i] = -1;
+
+    for(i = 0; i < n; i++) {
+        int found = 0;
+        for(j = 0; j < frames; j++) {
+            if(f[j] == pages[i]) found = 1;
+        }
+
+        if(!found) {
+            int pos = -1, farthest = i;
+
+            for(j = 0; j < frames; j++) {
+                int k;
+                for(k = i + 1; k < n; k++) {
+                    if(f[j] == pages[k]) break;
+                }
+
+                if(k > farthest) {
+                    farthest = k;
+                    pos = j;
+                }
+            }
+
+            if(pos == -1) pos = 0;
+
+            f[pos] = pages[i];
+            fault++;
+        }
+    }
+
+    printf("Optimal Page Faults = %d", fault);
+    return 0;
+}
